@@ -1,6 +1,6 @@
 $(document).ready(function(){
-  var placeholder = "0";
-  var value = "0";
+  var placeholder = 0;
+  var value = null;
   var action = "";
   var numbers = $(".number").map(function(index) {return this.id;});
   var operators = $(".operator").map(function(index){return this.id;});
@@ -9,13 +9,45 @@ $(document).ready(function(){
   var numberClickHandler = function() {
     placeholder +=$(this).text().trim();
     $("#display input").val(placeholder);
+    evaluate(placeholder, value, action);
   };
 
   var operatorClickHandler = function() {
     action = $(this).text().trim();
-    evaluate(placeholder, value, action);
+    $("#display input").val(value);
+  }
 
-    placeholder = "0";
+  var evaluate = function(currentPlaceholder, currentValue, currentAction) {
+    console.log(value);
+    console.log(placeholder);
+    console.log(action);
+    if (value === null) {
+      value = currentPlaceholder;
+      placeholder = 0;
+    }
+    if (!action) {
+
+    }
+    if (currentAction === "+") {
+      value = parseInt(currentPlaceholder) + parseInt(currentValue);
+      placeholder = 0;
+    } else if (currentAction === "-") {
+      value = parseInt(currentValue) - parseInt(currentPlaceholder);
+      placeholder = 0;
+    } else if (currentAction === "x") {
+      value = parseInt(currentPlaceholder) * parseInt(currentValue);
+      placeholder = 0;
+    } else if (currentAction === "/") {
+      value = parseInt(currentValue) / parseInt(currentPlaceholder);
+      placeholder = 0;
+    } else if (currentAction === "+/-") {
+      value = -1 * parseInt(currentValue);
+      placeholder = 0;
+    } else if (currentAction === "%") {
+      value = .01 * parseInt(currentValue);
+      placeholder = 0;
+    }
+
   }
 
 //Add click handlers to numbers
@@ -29,10 +61,10 @@ $(document).ready(function(){
   }
 
   $("#ac").on("click", function() {
-    value = "0";
-    placeholder = "0";
+    value = null;
+    placeholder = 0;
     action = "";
-    $("#display input").val("0");
+    $("#display input").val(value);
   })
 
   $("#decimal").on("click", function() {
@@ -44,41 +76,3 @@ $(document).ready(function(){
 
 
 });
-
-var evaluate = function(placeholder, value, action) {
-  if (action === "+") {
-    value = parseInt(placeholder) + parseInt(value);
-    $("#display input").val(value);
-    console.log(parseInt(placeholder));
-    console.log(parseInt(value));
-  }
-}
-
-var clearActionPlaceholder = function() {
-  action = "";
-  placeholder = "0";
-};
-
-var add = function(x,y) {
-  return x + y;
-};
-
-var subtract = function(x,y) {
-  return x - y;
-};
-
-var multiply = function(x,y) {
-  return x * y;
-};
-
-var divide = function(x,y) {
-  return x / y;
-};
-
-var inverse = function(x) {
-  return x * -1;
-};
-
-var percent = function(x) {
-  return x * .01;
-};
