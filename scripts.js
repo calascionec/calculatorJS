@@ -7,7 +7,11 @@ $(document).ready(function(){
 
 
   var numberClickHandler = function() {
-    placeholder +=$(this).text().trim();
+    if (placeholder === 0) {
+      placeholder = $(this).text().trim();
+    } else {
+      placeholder +=$(this).text().trim();
+    }
     $("#display input").val(placeholder);
     evaluate(placeholder, value, action);
   };
@@ -18,15 +22,12 @@ $(document).ready(function(){
   }
 
   var evaluate = function(currentPlaceholder, currentValue, currentAction) {
-    console.log(value);
-    console.log(placeholder);
-    console.log(action);
+    if (!action) {
+      return;
+    }
     if (value === null) {
       value = currentPlaceholder;
       placeholder = 0;
-    }
-    if (!action) {
-
     }
     if (currentAction === "+") {
       value = parseInt(currentPlaceholder) + parseInt(currentValue);
@@ -69,10 +70,16 @@ $(document).ready(function(){
 
   $("#decimal").on("click", function() {
     if($("#display input").val().indexOf(".") === -1) {
-      placeholder += ".";
+      placeholder +=$(this).text().trim();
+      $("#display input").val(placeholder);
     }
   })
 
+  $("#equals").on("click", function() {
+    $("#display input").val(value);
+    placeholder = 0;
+    value = 0;
+  })
 
 
 });
