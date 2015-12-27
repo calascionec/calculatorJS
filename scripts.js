@@ -83,6 +83,16 @@ $(document).ready(function(){
     }
   })
 
+  $("#inverse").on("click", function() {
+    if (placeholder) {
+      placeholder = parseFloat(placeholder) * -1;
+      $("#display input").val(placeholder);
+    } else {
+      value = parseFloat(value) * -1;
+      $("#display input").val(value);
+    }
+  })
+
   $("#equals").on("click", function() {
     if (value === null) {
       value = placeholder;
