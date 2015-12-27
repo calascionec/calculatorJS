@@ -7,17 +7,19 @@ $(document).ready(function(){
 
 
   var numberClickHandler = function() {
-    if (placeholder === 0) {
-      placeholder = $(this).text().trim();
-    } else {
-      placeholder +=$(this).text().trim();
-    }
+    placeholder += $(this).text().trim();
+    placeholder = placeholder[0] === "0" ? placeholder.slice(1) : placeholder;
     $("#display input").val(placeholder);
-    evaluate(placeholder, value, action);
   };
 
   var operatorClickHandler = function() {
     action = $(this).text().trim();
+    if (value === null) {
+      value = placeholder;
+      placeholder = 0;
+    } else {
+      evaluate(placeholder, value, action);
+    }
     $("#display input").val(value);
   }
 
@@ -30,25 +32,21 @@ $(document).ready(function(){
       placeholder = 0;
     }
     if (currentAction === "+") {
-      value = parseInt(currentPlaceholder) + parseInt(currentValue);
+      value = parseFloat(currentPlaceholder) + parseFloat(currentValue);
       placeholder = 0;
     } else if (currentAction === "-") {
-      value = parseInt(currentValue) - parseInt(currentPlaceholder);
+      value = parseFloat(currentValue) - parseFloat(currentPlaceholder);
       placeholder = 0;
     } else if (currentAction === "x") {
-      value = parseInt(currentPlaceholder) * parseInt(currentValue);
+      value = parseFloat(currentPlaceholder) * parseFloat(currentValue);
       placeholder = 0;
     } else if (currentAction === "/") {
-      value = parseInt(currentValue) / parseInt(currentPlaceholder);
+      value = parseFloat(currentValue) / parseFloat(currentPlaceholder);
       placeholder = 0;
     } else if (currentAction === "+/-") {
-      value = -1 * parseInt(currentValue);
-      placeholder = 0;
-    } else if (currentAction === "%") {
-      value = .01 * parseInt(currentValue);
+      value = -1 * parseFloat(currentValue);
       placeholder = 0;
     }
-
   }
 
 //Add click handlers to numbers
@@ -75,10 +73,27 @@ $(document).ready(function(){
     }
   })
 
+  $("#percent").on("click", function() {
+    if (placeholder) {
+      placeholder = parseFloat(placeholder) * .01;
+      $("#display input").val(placeholder);
+    } else {
+      value = parseFloat(value) * .01;
+      $("#display input").val(value);
+    }
+  })
+
   $("#equals").on("click", function() {
-    $("#display input").val(value);
-    placeholder = 0;
-    value = 0;
+    if (value === null) {
+      value = placeholder;
+      $("#display input").val(placeholder);
+      placeholder = 0;
+    } else {
+      evaluate(placeholder, value, action);
+      $("#display input").val(value);
+      placeholder = 0;
+      value = null;
+    }
   })
 
 
