@@ -102,7 +102,6 @@ $(document).ready(function(){
       evaluate(placeholder, value, action);
       $("#display input").val(value);
       placeholder = 0;
-      value = null;
     }
   })
 
