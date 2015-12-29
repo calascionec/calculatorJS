@@ -13,12 +13,13 @@ $(document).ready(function(){
   };
 
   var operatorClickHandler = function() {
-    action = $(this).text().trim();
     if (value === null) {
+      action = $(this).text().trim();
       value = placeholder;
       placeholder = 0;
     } else {
       evaluate(placeholder, value, action);
+      action = $(this).text().trim();
     }
     $("#display input").val(value);
   }
